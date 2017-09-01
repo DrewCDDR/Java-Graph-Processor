@@ -35,18 +35,29 @@ public class Display extends java.awt.Canvas implements Runnable{
         Graphics g = img.getGraphics();
         
             g.setColor(java.awt.Color.red);
+            if(DisplayWindow.MATCHES.length != 0){
+                for (int i = 0; i < DisplayWindow.MATCHES.length; i++) {
+                    for (int j = 0; j < DisplayWindow.MATCHES.length; j++) {
+                        if (DisplayWindow.MATCHES[i][j] == 1) {
+                            if(i < DisplayWindow.NODES.size()){
+                                if (DisplayWindow.NODES.get(i) != null) {
+                                    int x_1 = DisplayWindow.NODES.get(i).getX() +Structures.Node.SIZE/2;
+                                    int y_1 = DisplayWindow.NODES.get(i).getY() +Structures.Node.SIZE/2;
 
-            for (int i = 0; i < DisplayWindow.MATCHES.length; i++) {
-                for (int j = 0; j < DisplayWindow.MATCHES.length; j++) {
-                    if (DisplayWindow.MATCHES[i][j] == 1) {
-                        int x_1 = DisplayWindow.NODES.get(i).getX() +Structures.Node.SIZE/2;
-                        int y_1 = DisplayWindow.NODES.get(i).getY() +Structures.Node.SIZE/2;
-                        int x_2 = DisplayWindow.NODES.get(j).getX() +Structures.Node.SIZE/2;
-                        int y_2 = DisplayWindow.NODES.get(j).getY() +Structures.Node.SIZE/2;
-                        g.drawLine(x_1, y_1, x_2, y_2);
+                                    if(j < DisplayWindow.NODES.size()){
+                                        if (DisplayWindow.NODES.get(j) != null) {
+                                            int x_2 = DisplayWindow.NODES.get(j).getX() +Structures.Node.SIZE/2;
+                                            int y_2 = DisplayWindow.NODES.get(j).getY() +Structures.Node.SIZE/2;
+                                            g.drawLine(x_1, y_1, x_2, y_2);
+                                        }
+                                    }
+                                } 
+                            }
+                        }
                     }
                 }
             }
+            
 
             for (int i = 0; i < DisplayWindow.NODES.size(); i++) {
                 DataWindow.current.setText("Actual: " +DisplayWindow.NODES.get(c%DisplayWindow.NODES.size()).getName());
@@ -54,7 +65,9 @@ public class Display extends java.awt.Canvas implements Runnable{
                 g.fillOval(DisplayWindow.NODES.get(i).getX(), DisplayWindow.NODES.get(i).getY(), Structures.Node.SIZE, Structures.Node.SIZE);
                 g.setColor(java.awt.Color.white.brighter());
                 g.setFont(new java.awt.Font("TimesNewRoman", java.awt.Font.BOLD, 16));
-                g.drawString(DisplayWindow.NODES.get(i).getName(), DisplayWindow.NODES.get(i).getX() +18, DisplayWindow.NODES.get(i).getY() +29);
+                if(i < DisplayWindow.NODES.size())
+                    g.drawString(DisplayWindow.NODES.get(i).getName(), DisplayWindow.NODES.get(i).getX() +18, DisplayWindow.NODES.get(i).getY() +29);
+                
             }
         
         return img;
@@ -78,24 +91,7 @@ public class Display extends java.awt.Canvas implements Runnable{
         addMouseListener(new Mouse());
         addMouseMotionListener(new Mouse());
         
-        addMouseWheelListener(new java.awt.event.MouseWheelListener() {
-            @Override
-            public void mouseWheelMoved(MouseWheelEvent e) {
-                if (e.getWheelRotation() < 0) {
-                    if (ZOOM >= 5) {
-                        ZOOM += 0.01f ;
-                    }else{
-                        ZOOM += 0.5;
-                    }
-                }else{
-                    if (ZOOM > 0.5) {
-                        ZOOM -= 0.5f;
-                    }else if(ZOOM > 0.25){
-                        ZOOM -= 0.05;
-                    }
-                }
-            }
-        });
+        addMouseWheelListener(new Mouse());
         
         while (true) {            
             java.awt.Graphics g = getBufferStrategy().getDrawGraphics();
@@ -106,6 +102,8 @@ public class Display extends java.awt.Canvas implements Runnable{
             }
         }
     }
+    
+    
     
     /**
      * <p>
@@ -131,6 +129,23 @@ public class Display extends java.awt.Canvas implements Runnable{
         public void mouseDragged(java.awt.event.MouseEvent e){
             updatePos(e);
         }
+        
+        @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                if (e.getWheelRotation() < 0) {
+                    if (ZOOM >= 5) {
+                        ZOOM += 0.01f ;
+                    }else{
+                        ZOOM += 0.5;
+                    }
+                }else{
+                    if (ZOOM > 0.5) {
+                        ZOOM -= 0.5f;
+                    }else if(ZOOM > 0.25){
+                        ZOOM -= 0.05;
+                    }
+                }
+            }
         
         public void updatePos(java.awt.event.MouseEvent e){
             if (DisplayWindow.NODES != null) {

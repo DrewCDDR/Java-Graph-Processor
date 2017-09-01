@@ -15,7 +15,6 @@ package Structures;
 public class Node {
     String name;
     int x, y;
-    boolean focus;
     public final static int SIZE = 48;
 
     /**
@@ -27,7 +26,6 @@ public class Node {
      */
     public Node(String name) {
         this.name = name;
-        this.focus = false;
         this.x = (int)(Math.random() * 514) +25;
         this.y = (int)(Math.random() * 428) +25;
     }

@@ -20,7 +20,8 @@ import java.util.ArrayList;
 public class DisplayWindow extends javax.swing.JFrame{
     public static int axis, ayis;
     public static int[][] MATCHES;
-    private Display canvas;
+    public static Display canvas;
+    private static Thread t;
     public static ArrayList<Structures.Node> NODES;
 
     /**
@@ -44,7 +45,8 @@ public class DisplayWindow extends javax.swing.JFrame{
         
         setVisible(true);
         
-        new Thread(canvas, "graphicThread").start();
+        t = new Thread(canvas, "graphicThread");
+        t.start();
     }
     
     /**
@@ -58,5 +60,14 @@ public class DisplayWindow extends javax.swing.JFrame{
         canvas.setSize(608, 522);
         canvas.setLocation(1, 1);
         add(canvas);
+    }
+    
+    /**
+     * 
+     * @param millis It is the time that the thread is going to be sleeping.
+     * @throws InterruptedException 
+     */
+    public static void sleep(long millis) throws InterruptedException{
+        t.sleep(millis);
     }
 }

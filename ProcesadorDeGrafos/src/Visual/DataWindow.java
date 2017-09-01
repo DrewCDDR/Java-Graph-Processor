@@ -268,7 +268,7 @@ public class DataWindow extends javax.swing.JFrame {
             } catch (Exception ex) {
                 javax.swing.JOptionPane.showMessageDialog(null, "La cantidad de nodos a crear no es un número.", "Error No. 3", javax.swing.JOptionPane.ERROR_MESSAGE);
             }
-            fillConectionsRandomly();
+            fillConnectionsRandomly();
             generateConnections();
         } else {
             javax.swing.JOptionPane.showMessageDialog(null, "El campo de 'Info:' esta vacío.", "Error No. 2", javax.swing.JOptionPane.ERROR_MESSAGE);
@@ -292,6 +292,8 @@ public class DataWindow extends javax.swing.JFrame {
                     for (int i = 0; i < cant; i++) {
                         if(graph.nodes.size() > 1){
                             int index = (int)((Math.random() *(graph.nodes.size() -1)) -1);
+                            if (index == graph.nodes.size())
+                                index--;
                             remove(index);
                         }else if(graph.nodes.size() == 1){
                             remove(0);
@@ -313,7 +315,7 @@ public class DataWindow extends javax.swing.JFrame {
      * adjacency in order to create the connections in a randomly way.
      * </p>
      */
-    public void fillConectionsRandomly() {
+    public void fillConnectionsRandomly() {
         int val;
         javax.swing.table.DefaultTableModel m = (javax.swing.table.DefaultTableModel) table.getModel();
         for (int i = 0; i < m.getRowCount(); i++) {
@@ -388,6 +390,7 @@ public class DataWindow extends javax.swing.JFrame {
             ((CustomModel) model).removeColumn(rowIndex + 1);
 
             graph.remove(rowIndex);
+            
             generateConnections();
         }
     }
